@@ -1,0 +1,1449 @@
+{
+  "id": "a717d19f-075b-4cc1-b7dc-eea2a22e59e0",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.audit_log": {
+      "name": "audit_log",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "audit_log_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "actor": {
+          "name": "actor",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "db_role": {
+          "name": "db_role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "action": {
+          "name": "action",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "entity_type": {
+          "name": "entity_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "entity_id": {
+          "name": "entity_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "before": {
+          "name": "before",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "after": {
+          "name": "after",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "at": {
+          "name": "at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "audit_log_entity_idx": {
+          "name": "audit_log_entity_idx",
+          "columns": [
+            {
+              "expression": "entity_type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "entity_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "at",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.correction": {
+      "name": "correction",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "correction_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "draw_id": {
+          "name": "draw_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "from_result_set_id": {
+          "name": "from_result_set_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "to_result_set_id": {
+          "name": "to_result_set_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "detected_by": {
+          "name": "detected_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "approved_by": {
+          "name": "approved_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "correction_draw_id_draw_id_fk": {
+          "name": "correction_draw_id_draw_id_fk",
+          "tableFrom": "correction",
+          "tableTo": "draw",
+          "columnsFrom": [
+            "draw_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "correction_from_same_draw_fk": {
+          "name": "correction_from_same_draw_fk",
+          "tableFrom": "correction",
+          "tableTo": "result_set",
+          "columnsFrom": [
+            "draw_id",
+            "from_result_set_id"
+          ],
+          "columnsTo": [
+            "draw_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "correction_to_same_draw_fk": {
+          "name": "correction_to_same_draw_fk",
+          "tableFrom": "correction",
+          "tableTo": "result_set",
+          "columnsFrom": [
+            "draw_id",
+            "to_result_set_id"
+          ],
+          "columnsTo": [
+            "draw_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "correction_distinct": {
+          "name": "correction_distinct",
+          "value": "\"correction\".\"from_result_set_id\" <> \"correction\".\"to_result_set_id\""
+        },
+        "correction_detected_by": {
+          "name": "correction_detected_by",
+          "value": "\"correction\".\"detected_by\" IN ('reconcile','validator','operator','public_report')"
+        },
+        "correction_reason": {
+          "name": "correction_reason",
+          "value": "length(trim(\"correction\".\"reason\")) > 0"
+        },
+        "correction_approved_by": {
+          "name": "correction_approved_by",
+          "value": "length(trim(\"correction\".\"approved_by\")) > 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.draw": {
+      "name": "draw",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "draw_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "draw_date": {
+          "name": "draw_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'SCHEDULED'"
+        },
+        "current_result_set_id": {
+          "name": "current_result_set_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "draw_draw_date_unique": {
+          "name": "draw_draw_date_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "draw_date"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "draw_status": {
+          "name": "draw_status",
+          "value": "\"draw\".\"status\" IN ('SCHEDULED','PUBLISHED','POSTPONED','CANCELLED')"
+        },
+        "draw_published_has_current": {
+          "name": "draw_published_has_current",
+          "value": "(\"draw\".\"current_result_set_id\" IS NULL) OR (\"draw\".\"status\" = 'PUBLISHED')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.import_run": {
+      "name": "import_run",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "import_run_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "source_id": {
+          "name": "source_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger": {
+          "name": "trigger",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'RUNNING'"
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "finished_at": {
+          "name": "finished_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stats": {
+          "name": "stats",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "error": {
+          "name": "error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "import_run_started_idx": {
+          "name": "import_run_started_idx",
+          "columns": [
+            {
+              "expression": "started_at",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "import_run_source_id_source_id_fk": {
+          "name": "import_run_source_id_source_id_fk",
+          "tableFrom": "import_run",
+          "tableTo": "source",
+          "columnsFrom": [
+            "source_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "import_run_trigger": {
+          "name": "import_run_trigger",
+          "value": "\"import_run\".\"trigger\" IN ('schedule','drawday','reconcile','backfill','manual','fixture')"
+        },
+        "import_run_status": {
+          "name": "import_run_status",
+          "value": "\"import_run\".\"status\" IN ('RUNNING','SUCCEEDED','SKIPPED','FAILED')"
+        },
+        "import_run_finished": {
+          "name": "import_run_finished",
+          "value": "(\"import_run\".\"status\" = 'RUNNING') = (\"import_run\".\"finished_at\" IS NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.prize_category": {
+      "name": "prize_category",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "smallint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "prize_category_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "32767",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_th": {
+          "name": "name_th",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_en": {
+          "name": "name_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "match_type": {
+          "name": "match_type",
+          "type": "match_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "digits": {
+          "name": "digits",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sort_order": {
+          "name": "sort_order",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "prize_category_code_unique": {
+          "name": "prize_category_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
+        },
+        "prize_category_sort_order_unique": {
+          "name": "prize_category_sort_order_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sort_order"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "prize_category_match_digits": {
+          "name": "prize_category_match_digits",
+          "value": "(\"prize_category\".\"match_type\" = 'EXACT6' AND \"prize_category\".\"digits\" = 6)\n       OR (\"prize_category\".\"match_type\" IN ('PREFIX3','SUFFIX3') AND \"prize_category\".\"digits\" = 3)\n       OR (\"prize_category\".\"match_type\" = 'SUFFIX2' AND \"prize_category\".\"digits\" = 2)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.prize_number": {
+      "name": "prize_number",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "prize_number_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "result_set_id": {
+          "name": "result_set_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize_category_id": {
+          "name": "prize_category_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "number": {
+          "name": "number",
+          "type": "varchar(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "draw_order": {
+          "name": "draw_order",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "prize_number_prize_fk": {
+          "name": "prize_number_prize_fk",
+          "tableFrom": "prize_number",
+          "tableTo": "result_prize",
+          "columnsFrom": [
+            "result_set_id",
+            "prize_category_id"
+          ],
+          "columnsTo": [
+            "result_set_id",
+            "prize_category_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "prize_number_unique": {
+          "name": "prize_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "result_set_id",
+            "prize_category_id",
+            "number"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "prize_number_digits": {
+          "name": "prize_number_digits",
+          "value": "\"prize_number\".\"number\" ~ '^[0-9]{2,6}$'"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.prize_structure": {
+      "name": "prize_structure",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "smallint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "prize_structure_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "32767",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "first_observed_draw": {
+          "name": "first_observed_draw",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_observed_draw": {
+          "name": "last_observed_draw",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "prize_structure_code_unique": {
+          "name": "prize_structure_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.prize_structure_rule": {
+      "name": "prize_structure_rule",
+      "schema": "",
+      "columns": {
+        "prize_structure_id": {
+          "name": "prize_structure_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize_category_id": {
+          "name": "prize_category_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expected_count": {
+          "name": "expected_count",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "prize_structure_rule_prize_structure_id_prize_structure_id_fk": {
+          "name": "prize_structure_rule_prize_structure_id_prize_structure_id_fk",
+          "tableFrom": "prize_structure_rule",
+          "tableTo": "prize_structure",
+          "columnsFrom": [
+            "prize_structure_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "prize_structure_rule_prize_category_id_prize_category_id_fk": {
+          "name": "prize_structure_rule_prize_category_id_prize_category_id_fk",
+          "tableFrom": "prize_structure_rule",
+          "tableTo": "prize_category",
+          "columnsFrom": [
+            "prize_category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "prize_structure_rule_prize_structure_id_prize_category_id_pk": {
+          "name": "prize_structure_rule_prize_structure_id_prize_category_id_pk",
+          "columns": [
+            "prize_structure_id",
+            "prize_category_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "prize_structure_rule_count": {
+          "name": "prize_structure_rule_count",
+          "value": "\"prize_structure_rule\".\"expected_count\" >= 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.raw_payload": {
+      "name": "raw_payload",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "raw_payload_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "source_id": {
+          "name": "source_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "import_run_id": {
+          "name": "import_run_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "endpoint": {
+          "name": "endpoint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "request_method": {
+          "name": "request_method",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "request_params": {
+          "name": "request_params",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "http_status": {
+          "name": "http_status",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fetched_at": {
+          "name": "fetched_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content_type": {
+          "name": "content_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "response_headers": {
+          "name": "response_headers",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "body_bytes": {
+          "name": "body_bytes",
+          "type": "bytea",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "byte_size": {
+          "name": "byte_size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sha256": {
+          "name": "sha256",
+          "type": "bytea",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "body_json": {
+          "name": "body_json",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "provenance": {
+          "name": "provenance",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "raw_payload_source_id_source_id_fk": {
+          "name": "raw_payload_source_id_source_id_fk",
+          "tableFrom": "raw_payload",
+          "tableTo": "source",
+          "columnsFrom": [
+            "source_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "raw_payload_import_run_id_import_run_id_fk": {
+          "name": "raw_payload_import_run_id_import_run_id_fk",
+          "tableFrom": "raw_payload",
+          "tableTo": "import_run",
+          "columnsFrom": [
+            "import_run_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "raw_payload_dedupe": {
+          "name": "raw_payload_dedupe",
+          "nullsNotDistinct": false,
+          "columns": [
+            "source_id",
+            "endpoint",
+            "request_params",
+            "sha256"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "raw_payload_method": {
+          "name": "raw_payload_method",
+          "value": "\"raw_payload\".\"request_method\" IN ('GET','POST')"
+        },
+        "raw_payload_http_status": {
+          "name": "raw_payload_http_status",
+          "value": "\"raw_payload\".\"http_status\" BETWEEN 100 AND 599"
+        },
+        "raw_payload_size": {
+          "name": "raw_payload_size",
+          "value": "\"raw_payload\".\"byte_size\" = octet_length(\"raw_payload\".\"body_bytes\") AND \"raw_payload\".\"byte_size\" <= 1048576"
+        },
+        "raw_payload_sha256": {
+          "name": "raw_payload_sha256",
+          "value": "\"raw_payload\".\"sha256\" = sha256(\"raw_payload\".\"body_bytes\")"
+        },
+        "raw_payload_no_secret_headers": {
+          "name": "raw_payload_no_secret_headers",
+          "value": "NOT (\"raw_payload\".\"response_headers\" ?| ARRAY['set-cookie','cookie','authorization','proxy-authorization','x-api-key'])"
+        },
+        "raw_payload_provenance": {
+          "name": "raw_payload_provenance",
+          "value": "length(trim(\"raw_payload\".\"provenance\")) > 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.result_prize": {
+      "name": "result_prize",
+      "schema": "",
+      "columns": {
+        "result_set_id": {
+          "name": "result_set_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize_category_id": {
+          "name": "prize_category_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount_baht": {
+          "name": "amount_baht",
+          "type": "numeric(14, 2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "result_prize_result_set_id_result_set_id_fk": {
+          "name": "result_prize_result_set_id_result_set_id_fk",
+          "tableFrom": "result_prize",
+          "tableTo": "result_set",
+          "columnsFrom": [
+            "result_set_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "result_prize_prize_category_id_prize_category_id_fk": {
+          "name": "result_prize_prize_category_id_prize_category_id_fk",
+          "tableFrom": "result_prize",
+          "tableTo": "prize_category",
+          "columnsFrom": [
+            "prize_category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "result_prize_result_set_id_prize_category_id_pk": {
+          "name": "result_prize_result_set_id_prize_category_id_pk",
+          "columns": [
+            "result_set_id",
+            "prize_category_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "result_prize_amount": {
+          "name": "result_prize_amount",
+          "value": "\"result_prize\".\"amount_baht\" IS NULL OR \"result_prize\".\"amount_baht\" >= 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.result_set": {
+      "name": "result_set",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "result_set_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "draw_id": {
+          "name": "draw_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize_structure_id": {
+          "name": "prize_structure_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "raw_payload_id": {
+          "name": "raw_payload_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "import_run_id": {
+          "name": "import_run_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content_hash": {
+          "name": "content_hash",
+          "type": "bytea",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verification_status": {
+          "name": "verification_status",
+          "type": "verification_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'PENDING'"
+        },
+        "status_reason": {
+          "name": "status_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "verified_at": {
+          "name": "verified_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verified_by": {
+          "name": "verified_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "result_set_draw_id_draw_id_fk": {
+          "name": "result_set_draw_id_draw_id_fk",
+          "tableFrom": "result_set",
+          "tableTo": "draw",
+          "columnsFrom": [
+            "draw_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "result_set_prize_structure_id_prize_structure_id_fk": {
+          "name": "result_set_prize_structure_id_prize_structure_id_fk",
+          "tableFrom": "result_set",
+          "tableTo": "prize_structure",
+          "columnsFrom": [
+            "prize_structure_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "result_set_raw_payload_id_raw_payload_id_fk": {
+          "name": "result_set_raw_payload_id_raw_payload_id_fk",
+          "tableFrom": "result_set",
+          "tableTo": "raw_payload",
+          "columnsFrom": [
+            "raw_payload_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "result_set_import_run_id_import_run_id_fk": {
+          "name": "result_set_import_run_id_import_run_id_fk",
+          "tableFrom": "result_set",
+          "tableTo": "import_run",
+          "columnsFrom": [
+            "import_run_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "result_set_draw_version": {
+          "name": "result_set_draw_version",
+          "nullsNotDistinct": false,
+          "columns": [
+            "draw_id",
+            "version"
+          ]
+        },
+        "result_set_draw_id_id": {
+          "name": "result_set_draw_id_id",
+          "nullsNotDistinct": false,
+          "columns": [
+            "draw_id",
+            "id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "result_set_version": {
+          "name": "result_set_version",
+          "value": "\"result_set\".\"version\" >= 1"
+        },
+        "result_set_content_hash": {
+          "name": "result_set_content_hash",
+          "value": "octet_length(\"result_set\".\"content_hash\") = 32"
+        },
+        "result_set_verified_fields": {
+          "name": "result_set_verified_fields",
+          "value": "(\"result_set\".\"verification_status\" = 'VERIFIED') = (\"result_set\".\"verified_at\" IS NOT NULL AND \"result_set\".\"verified_by\" IS NOT NULL)"
+        },
+        "result_set_reason_required": {
+          "name": "result_set_reason_required",
+          "value": "\"result_set\".\"verification_status\" NOT IN ('QUARANTINED','REJECTED') OR length(trim(coalesce(\"result_set\".\"status_reason\", ''))) > 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.source": {
+      "name": "source",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "smallint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "source_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "32767",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "base_url": {
+          "name": "base_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "licence": {
+          "name": "licence",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "terms_url": {
+          "name": "terms_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_authoritative": {
+          "name": "is_authoritative",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "source_code_unique": {
+          "name": "source_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.verification_check": {
+      "name": "verification_check",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "verification_check_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "result_set_id": {
+          "name": "result_set_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "check_kind": {
+          "name": "check_kind",
+          "type": "check_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "check_code": {
+          "name": "check_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "outcome": {
+          "name": "outcome",
+          "type": "check_outcome",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "details": {
+          "name": "details",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "evidence_ref": {
+          "name": "evidence_ref",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "performed_by": {
+          "name": "performed_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "checked_at": {
+          "name": "checked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "verification_check_result_set_idx": {
+          "name": "verification_check_result_set_idx",
+          "columns": [
+            {
+              "expression": "result_set_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "verification_check_result_set_id_result_set_id_fk": {
+          "name": "verification_check_result_set_id_result_set_id_fk",
+          "tableFrom": "verification_check",
+          "tableTo": "result_set",
+          "columnsFrom": [
+            "result_set_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "verification_check_evidence_ref": {
+          "name": "verification_check_evidence_ref",
+          "value": "\"verification_check\".\"check_kind\" <> 'OFFICIAL_EVIDENCE' OR length(trim(coalesce(\"verification_check\".\"evidence_ref\", ''))) > 0"
+        },
+        "verification_check_performed_by": {
+          "name": "verification_check_performed_by",
+          "value": "length(trim(\"verification_check\".\"performed_by\")) > 0"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.check_kind": {
+      "name": "check_kind",
+      "schema": "public",
+      "values": [
+        "VALIDATION",
+        "OFFICIAL_EVIDENCE",
+        "OPERATOR_REVIEW"
+      ]
+    },
+    "public.check_outcome": {
+      "name": "check_outcome",
+      "schema": "public",
+      "values": [
+        "PASS",
+        "WARN",
+        "FAIL"
+      ]
+    },
+    "public.match_type": {
+      "name": "match_type",
+      "schema": "public",
+      "values": [
+        "EXACT6",
+        "PREFIX3",
+        "SUFFIX3",
+        "SUFFIX2"
+      ]
+    },
+    "public.verification_status": {
+      "name": "verification_status",
+      "schema": "public",
+      "values": [
+        "PENDING",
+        "VALIDATED",
+        "VERIFIED",
+        "QUARANTINED",
+        "REJECTED"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

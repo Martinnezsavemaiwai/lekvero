@@ -8,3 +8,4 @@ export * from './matcher';
 export * from './glo/schema';
 export * from './glo/map';
 export * from './glo/checker-labels';
+export * from './glo/crosscheck';

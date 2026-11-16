@@ -7,13 +7,14 @@ An **informational** Thai Government Lottery (สลากกินแบ่ง�
 
 ## Status
 
-| Milestone                                    | State                                      |
-| -------------------------------------------- | ------------------------------------------ |
-| Research & architecture (`docs/`)            | Done, reviewed                             |
-| M0: data contracts & fixtures                | Done (inquiry email drafted, **not sent**) |
-| M1: repository foundation                    | Done                                       |
-| M2: matching engine                          | Done                                       |
-| M3+: database, ingestion, public API, web UI | Not started                                |
+| Milestone                               | State                                      |
+| --------------------------------------- | ------------------------------------------ |
+| Research & architecture (`docs/`)       | Done, reviewed                             |
+| M0: data contracts & fixtures           | Done (inquiry email drafted, **not sent**) |
+| M1: repository foundation               | Done                                       |
+| M2: matching engine                     | Done                                       |
+| M3: PostgreSQL schema, lifecycle, roles | Done (not yet committed; awaiting review)  |
+| M4+: ingestion, public API, web UI      | Not started                                |
 
 ## Layout
 
@@ -23,6 +24,7 @@ apps/
   web/        Next.js frontend (placeholder page)
 packages/
   shared/     Zod schemas, canonical draw model, matching engine, GLO data contracts
+  db/         Drizzle schema, SQL migrations, import/verification repositories (PostgreSQL 17)
 fixtures/glo/v1/   Archived GLO API responses + synthetic malformed cases (see its README)
 docs/              research, architecture, roadmap, ADRs, legal drafts
 scripts/           fixture tooling (Python 3, stdlib only)
@@ -47,6 +49,24 @@ pnpm --filter @lekvero/web dev # http://localhost:3000
 ```
 
 No test or dev command contacts GLO. Live ingestion is not implemented.
+
+### Local database (PostgreSQL 17)
+
+See [`docs/runbooks/database.md`](docs/runbooks/database.md) for the full procedure. Short version:
+
+```bash
+docker compose up -d postgres                 # needs POSTGRES_PASSWORD in .env
+set -a; . ./.env; set +a
+pnpm --filter @lekvero/db db:bootstrap-roles  # admin: roles + database
+pnpm --filter @lekvero/db db:migrate          # explicit; never on app startup
+pnpm --filter @lekvero/db db:seed:fixtures    # optional, LEKVERO_ENV=local only
+pnpm test:db                                  # DB integration tests (DATABASE_URL = admin URL)
+pnpm db:verify-migrations                     # offline migration safety checks
+```
+
+Results move through `PENDING → VALIDATED → VERIFIED` (or `QUARANTINED` / `REJECTED`).
+A valid import is only **VALIDATED**; publishing requires recorded official evidence.
+Design: [`docs/architecture/database-design.md`](docs/architecture/database-design.md), [ADR-0002](docs/adr/0002-database-design-revisions.md).
 
 ## Using the matching engine
 

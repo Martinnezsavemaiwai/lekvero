@@ -14,7 +14,9 @@
     "typecheck": "pnpm -r --parallel typecheck",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "pnpm -r build"
+    "build": "pnpm -r build",
+    "test:db": "vitest run --config packages/db/vitest.integration.config.ts",
+    "db:verify-migrations": "pnpm --filter @lekvero/db db:verify-migrations"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
