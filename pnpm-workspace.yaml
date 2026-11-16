@@ -1,0 +1,8 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# Dependency install scripts stay disabled. esbuild ships prebuilt platform
+# binaries as optional deps, so its postinstall is not needed (tsx/vitest verified).
+ignoredBuiltDependencies:
+  - esbuild

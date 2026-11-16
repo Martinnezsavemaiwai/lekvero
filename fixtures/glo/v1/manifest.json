@@ -1,0 +1,328 @@
+{
+  "fixture_set": "glo",
+  "version": 1,
+  "licence_note": "Live responses come from GLO; catalogue licence is 'Creative Commons Non-Commercial (Any)' (gdcatalog dataset_c4-9_01). Stored for local development and testing only. Public redistribution is blocked pending GLO clarification (see docs/legal/).",
+  "retrieval_clock_note": "retrieved_at = sandbox file mtime (UTC). The one captured server Date header is ~5 min earlier than the sandbox clock; treat times as approximate (±10 min).",
+  "redactions": "Response bodies contained no personal data or credentials and are byte-identical to what was received. Raw response headers (which carried WAF/session cookies) were NOT stored.",
+  "files": [
+    {
+      "path": "live/check/2024-03-01_nonwinner.json",
+      "sha256": "d085d0c3a5c2d312e44ab0a547d5ba2214f6fa11b93e7a3b78ff725aff2e8fd0",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getcheckLotteryResult",
+      "request": {
+        "number": [
+          {
+            "lottery_num": "123456"
+          }
+        ],
+        "period_date": "2024-03-01"
+      },
+      "retrieved_at": "2026-11-16T16:32:25Z"
+    },
+    {
+      "path": "live/check/2024-03-01_winners.json",
+      "sha256": "4cfcf1d4f93711ccb6e406e32b6ccebe6f18a7d3613b9cbb53ac5d5b852cb7e5",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getcheckLotteryResult",
+      "request": {
+        "number": [
+          {
+            "lottery_num": "253603"
+          },
+          {
+            "lottery_num": "000079"
+          },
+          {
+            "lottery_num": "253602"
+          }
+        ],
+        "period_date": "2024-03-01"
+      },
+      "retrieved_at": "2026-11-16T16:33:22Z"
+    },
+    {
+      "path": "live/latest/2026-11-16.json",
+      "sha256": "0f81f7573faa9dacc69c46caf96e63a6ee30b2898ec8e1fd1c36b10ab6a98cb5",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/lottery/getLatestLottery",
+      "request": null,
+      "retrieved_at": "2026-11-16T16:32:05Z",
+      "response_headers": {
+        "Date": "Mon, 16 Nov 2026 16:27:14 GMT",
+        "Cache-Control": "must-revalidate, private, max-age=1800",
+        "X-Cache": "HIT"
+      }
+    },
+    {
+      "path": "live/result-by-date/1995-01-16.null.json",
+      "sha256": "afe94da460509c7b93673132eb40f228d9d4beeea0ab0ee7e989d96bc491eb46",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "16",
+        "month": "01",
+        "year": "1995"
+      },
+      "retrieved_at": "2026-11-16T16:32:56Z"
+    },
+    {
+      "path": "live/result-by-date/2006-02-01.null.json",
+      "sha256": "afe94da460509c7b93673132eb40f228d9d4beeea0ab0ee7e989d96bc491eb46",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "01",
+        "month": "02",
+        "year": "2006"
+      },
+      "retrieved_at": "2026-11-16T16:34:18Z"
+    },
+    {
+      "path": "live/result-by-date/2007-01-16.null.json",
+      "sha256": "afe94da460509c7b93673132eb40f228d9d4beeea0ab0ee7e989d96bc491eb46",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "16",
+        "month": "01",
+        "year": "2007"
+      },
+      "retrieved_at": "2026-11-16T16:32:49Z"
+    },
+    {
+      "path": "live/result-by-date/2008-02-01.null.json",
+      "sha256": "afe94da460509c7b93673132eb40f228d9d4beeea0ab0ee7e989d96bc491eb46",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "01",
+        "month": "02",
+        "year": "2008"
+      },
+      "retrieved_at": "2026-11-16T16:34:26Z"
+    },
+    {
+      "path": "live/result-by-date/2010-01-16.null.json",
+      "sha256": "afe94da460509c7b93673132eb40f228d9d4beeea0ab0ee7e989d96bc491eb46",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "16",
+        "month": "01",
+        "year": "2010"
+      },
+      "retrieved_at": "2026-11-16T16:33:47Z"
+    },
+    {
+      "path": "live/result-by-date/2011-02-01.json",
+      "sha256": "9d0b9f67a24ce46f212a9af77209febe364f223728f11185ccb6ba352e8a703c",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "01",
+        "month": "02",
+        "year": "2011"
+      },
+      "retrieved_at": "2026-11-16T16:34:34Z"
+    },
+    {
+      "path": "live/result-by-date/2013-02-01.json",
+      "sha256": "64c3c6067ac27a8225e9678d8f7544c43c65807724ee1cb12fea8cb1927433b6",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "01",
+        "month": "02",
+        "year": "2013"
+      },
+      "retrieved_at": "2026-11-16T16:34:44Z"
+    },
+    {
+      "path": "live/result-by-date/2015-01-16.json",
+      "sha256": "87672ede7761355e05d3b89c811c4b6b3e21e1afe87b575faf7b8672d495ef17",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "16",
+        "month": "01",
+        "year": "2015"
+      },
+      "retrieved_at": "2026-11-16T16:33:40Z"
+    },
+    {
+      "path": "live/result-by-date/2020-01-16.null.json",
+      "sha256": "afe94da460509c7b93673132eb40f228d9d4beeea0ab0ee7e989d96bc491eb46",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "16",
+        "month": "01",
+        "year": "2020"
+      },
+      "retrieved_at": "2026-11-16T16:33:33Z"
+    },
+    {
+      "path": "live/result-by-date/2020-01-17.json",
+      "sha256": "d57286aad800d333d7bdd6456fa817e2281c64e9a4f3731cf154258bf4739866",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "17",
+        "month": "01",
+        "year": "2020"
+      },
+      "retrieved_at": "2026-11-16T16:34:52Z"
+    },
+    {
+      "path": "live/result-by-date/2024-03-01.json",
+      "sha256": "3873c0a357e21174233db60a2636c6e9ea43b8fced30ca01befcf187aeb95b35",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "01",
+        "month": "03",
+        "year": "2024"
+      },
+      "retrieved_at": "2026-11-16T16:32:19Z"
+    },
+    {
+      "path": "live/result-by-date/2024-03-05.null.json",
+      "sha256": "afe94da460509c7b93673132eb40f228d9d4beeea0ab0ee7e989d96bc491eb46",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "05",
+        "month": "03",
+        "year": "2024"
+      },
+      "retrieved_at": "2026-11-16T16:33:06Z"
+    },
+    {
+      "path": "live/result-by-date/2024-12-16.json",
+      "sha256": "f6f36b6e7fae63fdf9c837fdeb411814f14defbf5da111752f1514fe25fb7ae6",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "16",
+        "month": "12",
+        "year": "2024"
+      },
+      "retrieved_at": "2026-11-16T16:33:54Z"
+    },
+    {
+      "path": "live/result-by-date/2024-12-30.null.json",
+      "sha256": "afe94da460509c7b93673132eb40f228d9d4beeea0ab0ee7e989d96bc491eb46",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "30",
+        "month": "12",
+        "year": "2024"
+      },
+      "retrieved_at": "2026-11-16T16:33:14Z"
+    },
+    {
+      "path": "live/result-by-date/2025-01-17.json",
+      "sha256": "ee141ab0defadf05a3446eb41aab778c36a47ab517847cbf672d94f060ea95b8",
+      "kind": "live",
+      "source": "Government Lottery Office (GLO)",
+      "http_status": 200,
+      "endpoint": "https://www.glo.or.th/api/checking/getLotteryResult",
+      "request": {
+        "date": "17",
+        "month": "01",
+        "year": "2025"
+      },
+      "retrieved_at": "2026-11-16T16:34:02Z"
+    },
+    {
+      "path": "synthetic/malformed/bad-price.json",
+      "sha256": "c30881116a4dace3f1dace644ad58326c0b430a2b23de978080ae2e847f1c45b",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    },
+    {
+      "path": "synthetic/malformed/duplicate-in-fifth.json",
+      "sha256": "335c351289772d2a3620c8f7f371c74885ae1cb27e4b213cf5584b0ef4c66aab",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    },
+    {
+      "path": "synthetic/malformed/five-digit-number.json",
+      "sha256": "97f21dfa5e8a5a89102735718fbcf76d1822df495d433fa925b785c9a5b49736",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    },
+    {
+      "path": "synthetic/malformed/missing-first.json",
+      "sha256": "3b7d1a30d556f557188e2ff97f518f71a18a0e0b0569a45a019ad090b8f4d452",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    },
+    {
+      "path": "synthetic/malformed/near1-not-adjacent.json",
+      "sha256": "9bf47f5388c58db4d2957894267d56dba9f6dae0a75f14800c12d76ed17f2ed2",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    },
+    {
+      "path": "synthetic/malformed/numeric-value.json",
+      "sha256": "50c0eb0196392cdfaad138e15e5d32b82a09fb889c625b80ae00a4d2fa0391a6",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    },
+    {
+      "path": "synthetic/malformed/status-false.json",
+      "sha256": "8b2080f8f45d3a376bc7fd1abb269f3a2f302f5be40558a2f01ea4fbe59c8c44",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    },
+    {
+      "path": "synthetic/malformed/truncated.json.txt",
+      "sha256": "83dac7a524d971cb5e7eea54adad9bf3b35657c0fb56fd65f735ed1736576ba1",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    },
+    {
+      "path": "synthetic/malformed/wrong-count-fourth.json",
+      "sha256": "8c281c103c61f6d3ec1a0b5c369564343e912de449143f80e071a87201783e21",
+      "kind": "synthetic",
+      "note": "Deliberately malformed; derived by scripts/make-synthetic-fixtures.py. NOT GLO data."
+    }
+  ]
+}
