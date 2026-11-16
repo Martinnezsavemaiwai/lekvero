@@ -1,0 +1,6 @@
+{
+  "0000_init.sql": "a1735e28907417ce14adb1a2c4433de2c489d2854590f7e4d029409a89b9f625",
+  "0001_integrity_triggers.sql": "2536908f1a852f1f1dc35b9a8d76c6859037d39df750067d84410f0345cd841f",
+  "0002_reference_data.sql": "0ba3efc20fef72edb639ee6b31ec2f56da03d0e5cf520138af985c3c39ad52b7",
+  "0003_role_grants.sql": "9c27cda3b9f653ada677f5ad5e63cc31c8eb1b342d4d85c5527892c3d3a1fc0e"
+}

@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+fixtures/
+.next/
+coverage/
+dist/
+# Reviewed planning docs are not auto-reformatted (avoid silent rewrites).
+docs/
+next-env.d.ts
+# Generated + checksummed migrations must not be reformatted.
+packages/db/migrations/
