@@ -1,0 +1,17 @@
+{
+  "name": "@lekvero/glo-client",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline-only GLO API client infrastructure (M4). Live access is not enabled.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@lekvero/shared": "workspace:*",
+    "zod": "^4.6.7"
+  }
+}
