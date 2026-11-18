@@ -7,14 +7,15 @@ An **informational** Thai Government Lottery (สลากกินแบ่ง�
 
 ## Status
 
-| Milestone                               | State                                      |
-| --------------------------------------- | ------------------------------------------ |
-| Research & architecture (`docs/`)       | Done, reviewed                             |
-| M0: data contracts & fixtures           | Done (inquiry email drafted, **not sent**) |
-| M1: repository foundation               | Done                                       |
-| M2: matching engine                     | Done                                       |
-| M3: PostgreSQL schema, lifecycle, roles | Done (not yet committed; awaiting review)  |
-| M4+: ingestion, public API, web UI      | Not started                                |
+| Milestone                               | State                                                  |
+| --------------------------------------- | ------------------------------------------------------ |
+| Research & architecture (`docs/`)       | Done, reviewed                                         |
+| M0: data contracts & fixtures           | Done (inquiry email drafted, **not sent**)             |
+| M1: repository foundation               | Done                                                   |
+| M2: matching engine                     | Done                                                   |
+| M3: PostgreSQL schema, lifecycle, roles | Done (merged in PR #1)                                 |
+| M4: offline GLO client infrastructure   | Done on branch `claude/m4-glo-client`; awaiting review |
+| M5+: ingestion, public API, web UI      | Not started                                            |
 
 ## Layout
 
@@ -25,6 +26,7 @@ apps/
 packages/
   shared/     Zod schemas, canonical draw model, matching engine, GLO data contracts
   db/         Drizzle schema, SQL migrations, import/verification repositories (PostgreSQL 17)
+  glo-client/ Offline-only GLO API client: typed transport, retry/rate-limit/circuit policy (no live access)
 fixtures/glo/v1/   Archived GLO API responses + synthetic malformed cases (see its README)
 docs/              research, architecture, roadmap, ADRs, legal drafts
 scripts/           fixture tooling (Python 3, stdlib only)
@@ -48,7 +50,9 @@ pnpm --filter @lekvero/api dev # http://127.0.0.1:4000/health
 pnpm --filter @lekvero/web dev # http://localhost:3000
 ```
 
-No test or dev command contacts GLO. Live ingestion is not implemented.
+No test or dev command contacts GLO. Live ingestion is not implemented, and the
+GLO client (`packages/glo-client`) refuses every non-loopback host by construction
+(see [ADR-0003](docs/adr/0003-glo-client-offline-infrastructure.md)).
 
 ### Local database (PostgreSQL 17)
 
